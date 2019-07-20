@@ -2,19 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\News;
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
+
+    public $routes;
+
+    public function __construct()
+    {
+        $this->routes = collect([
+            'newsIndex' => route('news.index')
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, News $news)
     {
-        //
+        return view('news.index',[
+            'news' => $news->all(),
+            'header' => 'News list',
+            'routes' => $this->routes
+        ]);
     }
 
     /**
@@ -46,7 +60,10 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        //
+        return view('news.show', [
+            'news' => $news,
+            'header' => 'One news',
+        ]);
     }
 
     /**
